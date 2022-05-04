@@ -18,12 +18,13 @@ def data_bases(db, app):
             return '<User %r>' % self.username
         
     class Questions(db.Model):
-        id_question = db.Column(db.Integer, primary_key=True),
-        text_question = db.Column(db.Strint(250),nullable=False, unique=True)
+        id_question = db.Column(db.Integer, primary_key=True)
+        text_question = db.Column(db.String(250),nullable=False, unique=True)
         id_answer = db.Column(db.String(250),nullable=False)
         data = db.Column(db.DateTime, nullable=False)
         
-
+        def __repr__(self):
+            return '<Questions %r>' % self.text_question
 
   
     db.create_all()
