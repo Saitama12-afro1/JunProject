@@ -4,9 +4,18 @@
 {% endblock %}
 
 {% block body %}
-<form method = "post">
-    <input type ="text" name ="title">Введите кол-во вопросов</input>
+<form method = "POST">
+    <input type ="text" name ="title" placeholder = "Введите кол-во вопросов"></input>
     <input type="submit" value="Отправить"></input>
 </form>
+<h2>
+    {% if question != None %}
+        Вопрос {{question.text_question}}<br>
+        Ответ {{question.text_answer}}
+    {% elif question == 0%}
+        Неверные данные
+    {% else %}
+    {% endif %}
+</h2>
 {%endblock%}
 

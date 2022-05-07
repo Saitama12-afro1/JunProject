@@ -1,24 +1,30 @@
 from distutils.debug import DEBUG
-from distutils.log import debug
-from flask import Flask, session,render_template
-import os
+from pickle import TRUE
+from flask import render_template, request
+from  global_variables import db,app
+from database import create_db
+from request_question import add_questions
+from database import Questions
+import json
+from sqlalchemy import desc
 from instance.config import Config
-from database import data_bases
-import sqlalchemy
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
+create_db()
 
-app = Flask(__name__, instance_relative_config=True)
-# app.config.from_pyfile("config.py", silent=True)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-
-data_bases(db,app)  
-
-@app.route("/")
-def hello_word():
-    return render_template("index.html")
+@app.route('/', methods=['POST', 'GET'])   
+def index():
+ 
+    question = Questions.query.order_by(desc(Questions.numer_row)).first()
+    if request.method == "POST":
+        try:
+            question = Questions.query.order_by(desc(Questions.numer_row)).first()
+            count_question:int = int(request.form.get("title"))
+            add_questions(count_question)
+           
+        except ValueError:
+            db.session.rollback()
+            question = 0
+    return render_template("index.html", question = question)
 
 
 if __name__ == "__main__":
